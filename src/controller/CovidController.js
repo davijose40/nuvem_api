@@ -1,3 +1,4 @@
+const axios = require('axios');
 const api = require('../utils/api');
 const verifyDateDiff = require('../utils/verify');
 const filtraDezMaioresCidades = require('../utils/filtraDezMaioresCidades');
@@ -48,21 +49,40 @@ module.exports = {
       arrayAllCitiesEndDate,
     );
 
-    const resp = tenCitiesEndDateArray.map((cityObject, i) => {
-      const perc =
-        (cityObject.confirmed_per_100k_inhabitants -
-          tenCitiesStartDateArray[i].confirmed_per_100k_inhabitants) *
-        0.001;
-      return {
-        percentual: `${perc.toFixed(2)}%`,
-        id: i,
-        city: cityObject.city,
-        state: cityObject.state,
-      };
-    });
+    const responseObjetctWithData = tenCitiesEndDateArray.map(
+      (cityObject, i) => {
+        const perc =
+          (cityObject.confirmed_per_100k_inhabitants -
+            tenCitiesStartDateArray[i].confirmed_per_100k_inhabitants) *
+          0.001;
+        return {
+          percentual: `${perc.toFixed(2)}%`,
+          id: i,
+          city: cityObject.city,
+          state: cityObject.state,
+        };
+      },
+    );
 
-    console.log('resp :>> ', resp);
+    try {
+      await axios.post(
+        'https://us-central1-lms-nuvem-mestra.cloudfunctions.net/testApi',
+        responseObjetctWithData,
+        {
+          headers: {
+            // Overwrite Axios's automatically set Content-Type
+            'Content-Type': 'application/json',
+            MeuNome: 'Davi José Bernarde da Silva',
+          },
+        },
+      );
+    } catch (error) {
+      console.log(error);
+      return response
+        .status(500)
+        .json({ message: 'something goes wrong try again later' });
+    }
 
-    return response.json({ message: 'hello from app' });
+    return response.status(201).json({ message: 'send to distination' });
   },
 };
