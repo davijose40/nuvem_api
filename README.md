@@ -24,10 +24,12 @@ Before you begin, ensure you have met the following requirements:
 <!-- How to use the thing -->
 ## To run just use yarn:
 `<yarn>`,
+## To run just use npm
+`<npm install>`
 
 
 <!-- How to contribute to the thing -->
-## To contribute to **sqlnode**, follow these esteps:
+## To contribute to **nuvem_api**, follow these esteps:
 1. Fork this repository.
 2. Create a branch: `< git checkout -b <branch name> >`.
 3. Make your changes and commit them: `< git commit -m <commit_message> >`.
